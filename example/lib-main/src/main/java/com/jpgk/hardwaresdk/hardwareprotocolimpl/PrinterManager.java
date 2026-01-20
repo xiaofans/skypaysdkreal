@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -220,17 +221,21 @@ public class PrinterManager implements BaseHardware {
                 printData.append(String.format("%02X ", b));
             }
 
-            printData.append("1B 64 02"); // 增加2行空白
+           // printData.append("1B 64 02"); // 增加2行空白
         }
         DLogger.log("PRINTER LOGO END=========");
         Log.w("PrinterManager","PRINTER LOGO END=========");
         printData.append("1D 21 00"); // 恢复默认字体
         printData.append("1B 61 01"); // 左对齐
+        printData.append("1B 21 08");
         if (printerModel.getPrinterBasic() != null){
             PrinterBasic printerBasic = printerModel.getPrinterBasic();
-            printItemLeftRight(printData,"Terminal S/N:",printerBasic.getTerminalSN());
-            printItemLeftRight(printData,"Ref No:",printerBasic.getRefNO());
-            printItemLeftRight(printData,"Date and Time:",DateUtils.convertDateFormat2(System.currentTimeMillis()));
+            Map<String, String> map = printerBasic.getData();
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                printItemLeftRight(printData,key,value);
+            }
         }
         printData.append("1B 61 01"); // 居中对齐
         printData.append(stringToHex("------------------------------------------------\n"));
@@ -241,15 +246,12 @@ public class PrinterManager implements BaseHardware {
 //            printItemLeftMiddleRight(printData,"***","ACKNOWLEDGEMENT RECEIPT","***");
             printData.append("1D 21 00"); // 恢复默认字体
             printData.append("1B 61 01"); // 左对齐
-            PrinterAcknowledgementReceipt acknowledgementReceipt = printerModel.getPrinterAcknowledgementReceipt();
-            printItemLeftRight(printData,"Type of Transaction:",acknowledgementReceipt.getTypeOfTransaction());
-            printItemLeftRight(printData,"Biller/Service:",acknowledgementReceipt.getBillerService());
-            printItemLeftRight(printData,"Mobile Number:",acknowledgementReceipt.getMobileNumber());
-            printItemLeftRight(printData,"Amount:",acknowledgementReceipt.getAmount());
-            printItemLeftRight(printData,"Service Fee:",acknowledgementReceipt.getServiceFee());
-            printItemLeftRight(printData,"VAT Amount:",acknowledgementReceipt.getVatAmount());
-            printItemLeftRight(printData,"Total Amount:",acknowledgementReceipt.getTotalAmount());
-            printItemLeftRight(printData,"Amount Received:",acknowledgementReceipt.getAmountReceived());
+            Map<String, String> map = printerModel.getPrinterAcknowledgementReceipt().getData();
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                printItemLeftRight(printData,key,value);
+            }
 
         }
         if (printerModel.getPrinterChangeRecovery() != null){
@@ -260,29 +262,33 @@ public class PrinterManager implements BaseHardware {
 //            printItemLeftMiddleRight(printData,"***","CHANGE RECOVERY","***");
             printData.append("1D 21 00"); // 恢复默认字体
             printData.append("1B 61 01"); // 左对齐
-            PrinterChangeRecovery changeRecovery = printerModel.getPrinterChangeRecovery();
-            printItemLeftRight(printData,"Change Amount:",changeRecovery.getChangeAmount());
-            printItemLeftRight(printData,"Action:",changeRecovery.getAction());
-            printItemLeftRight(printData,"Biller/Service:",changeRecovery.getBillerService());
-            printItemLeftRight(printData,"Mobile Numbe:",changeRecovery.getMobileNumber());
-            printItemLeftRight(printData,"Amount:",changeRecovery.getAmount());
-            printItemLeftRight(printData,"Service Fee:",changeRecovery.getServiceFee());
-            printItemLeftRight(printData,"VAT Amount:",changeRecovery.getVatAmount());
-            printItemLeftRight(printData,"Ref No (Change):",changeRecovery.getRefNoChange());
+            Map<String, String> map = printerModel.getPrinterChangeRecovery().getData();
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                printItemLeftRight(printData,key,value);
+            }
         }
 
         printData.append("1B 61 01"); // 居中对齐
         printData.append(stringToHex("------------------------------------------------\n"));
-        if (printerModel.getPrinterBottom() != null){
-            PrinterBottom printerBottom = printerModel.getPrinterBottom();
+        if (printerModel.getPrinterLargeBottom() != null){
+            PrinterBottom printerBottom = printerModel.getPrinterLargeBottom();
             printData.append("1D 21 00"); // 恢复默认字体
             printData.append("1D 21 01"); // 字体倍高倍宽
             printData.append("1B 61 01"); // 居中对齐
-            printData.append(stringToHex("*** "+printerBottom.getTipsMain()+ " ***\n"));
-            printData.append("1D 21 00"); // 恢复默认字体
-            printData.append(stringToHex("*** "+printerBottom.getTipsSub()+ " ***\n"));
+            List<String> mainTipsList = printerBottom.getData();
+            for(int i = 0; i < mainTipsList.size(); i ++){
+                printData.append(stringToHex("*** "+mainTipsList.get(i)+ "\n"));
+            }
         }
-
+        if (printerModel.getPrinterSmallBottom() != null){
+            printData.append("1D 21 00"); // 恢复默认字体
+            List<String> subTipsList = printerModel.getPrinterSmallBottom().getData();
+            for(int i = 0; i < subTipsList.size(); i ++){
+                printData.append(stringToHex("*** "+subTipsList.get(i)+ "\n"));
+            }
+        }
         printData.append("1B 64 05"); // 增加5行空白
         printData.append("1D 56 00"); // 全切纸
         // 恢复默认字体

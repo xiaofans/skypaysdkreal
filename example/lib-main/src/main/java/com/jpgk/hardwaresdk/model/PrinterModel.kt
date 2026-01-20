@@ -1,85 +1,89 @@
 package com.jpgk.hardwaresdk.model
 
 import com.jpgk.hardwaresdk.R
+import com.jpgk.hardwaresdk.utils.DateUtils
 
 class PrinterModel {
     var printerLogo:PrinterLogo?= null
     var printerBasic:PrinterBasic?=null
     var printerAcknowledgementReceipt:PrinterAcknowledgementReceipt?=null
     var printerChangeRecovery:PrinterChangeRecovery?=null
-    var printerBottom:PrinterBottom?=null
+    var printerLargeBottom:PrinterBottom?=null
+    var printerSmallBottom:PrinterBottom?=null
 
     fun getTestPrintData(){
         printerLogo= PrinterLogo()
         printerLogo?.run {
             logoRes = R.mipmap.skypay_logo
         }
-        printerBasic = PrinterBasic()
-        printerBasic?.run {
-            terminalSN = "SKYPAY26-000001"
-            refNO = "398855645676445"
-            dateAndTime = "2025-10-02 12:58:19"
+        printerBasic = PrinterBasic().apply {
+            data["terminalSN"] = "SKYPAY26-000001"
+            data["refNO"] = "398855645676445"
+            data["dateAndTime"] = DateUtils.convertDateFormat2(System.currentTimeMillis())
         }
-        printerAcknowledgementReceipt = PrinterAcknowledgementReceipt()
-        printerAcknowledgementReceipt?.run {
-            typeOfTransaction = "Cash In"
-            billerService = "GCASH"
-            mobileNumber = "0912xxx7890"
-            amount = "4,000.00"
-            serviceFee = "10.00"
-            vatAmount = "1.20"
-            totalAmount = "4,011.20"
-            amountReceived = "4050.00"
-        }
-        printerChangeRecovery = PrinterChangeRecovery()
-
-        printerChangeRecovery?.run {
-            changeAmount = "38.80"
-            action = "CREDITED TO WALLET"
-            billerService = "GCASH"
-            mobileNumber = "0912xxx7890"
-            amount = "27.60"
-            serviceFee = "10.00"
-            vatAmount = "1.20"
-            refNoChange = "59885645676445"
+        printerAcknowledgementReceipt = PrinterAcknowledgementReceipt().apply {
+            data["typeOfTransaction"] = "Cash In"
+            data["billerService"] = "GCASH"
+            data["mobileNumber"] = "0912xxx7890"
+            data["amount"] = "4,000.00"
+            data["serviceFee"] = "10.00"
+            data["vatAmount"] = "1.20"
+            data["totalAmount"] = "4,011.20"
+            data["amountReceived"] = "4050.00"
         }
 
-        printerBottom = PrinterBottom()
-        printerBottom?.run {
-            tipsMain = "THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX"
-            tipsSub = "For assistance,please visit skypay.com.ph and send us a message."
+        printerChangeRecovery = PrinterChangeRecovery().apply {
+            data["changeAmount"] = "38.80"
+            data["action"] = "CREDITED TO WALLET"
+            data["billerService"] = "GCASH"
+            data["mobileNumber"] = "0912xxx7890"
+            data["amount"] = "27.60"
+            data["serviceFee"] = "10.00"
+            data["vatAmount"] = "1.20"
+            data["refNoChange"] = "59885645676445"
+        }
+
+        printerLargeBottom = PrinterBottom().apply {
+            data.add( "*** THIS DOCUMENT IS NOT VALID FOR CLAIM OF ")
+            data.add("INPUT TAX ***")
+        }
+        printerSmallBottom = PrinterBottom().apply {
+            data.add("*** For assistance,please visit skypay.com.ph ")
+            data.add("and send us a message. ***")
         }
 
     }
 
-    fun getTestPrintDataNoChangeRecovery(){
+    fun getTestPrintDataNoChangeRecovery() {
         printerLogo= PrinterLogo()
         printerLogo?.run {
             logoRes = R.mipmap.skypay_logo
         }
-
-        printerBasic = PrinterBasic()
-        printerBasic?.run {
-            terminalSN = "SKYPAY26-000001"
-            refNO = "398855645676445"
-            dateAndTime = "2025-10-02 12:58:19"
+        printerBasic = PrinterBasic().apply {
+            data["terminalSN"] = "SKYPAY26-000001"
+            data["refNO"] = "398855645676445"
+            data["dateAndTime"] = DateUtils.convertDateFormat2(System.currentTimeMillis())
         }
-        printerAcknowledgementReceipt = PrinterAcknowledgementReceipt()
-        printerAcknowledgementReceipt?.run {
-            typeOfTransaction = "Cash In"
-            billerService = "GCASH"
-            mobileNumber = "0912xxx7890"
-            amount = "4,000.00"
-            serviceFee = "10.00"
-            vatAmount = "1.20"
-            totalAmount = "4,011.20"
-            amountReceived = "4050.00"
+        printerAcknowledgementReceipt = PrinterAcknowledgementReceipt().apply {
+            data["typeOfTransaction"] = "Cash In"
+            data["billerService"] = "GCASH"
+            data["mobileNumber"] = "0912xxx7890"
+            data["amount"] = "4,000.00"
+            data["serviceFee"] = "10.00"
+            data["vatAmount"] = "1.20"
+            data["totalAmount"] = "4,011.20"
+            data["amountReceived"] = "4050.00"
         }
 
-        printerBottom = PrinterBottom()
-        printerBottom?.run {
-            tipsMain = "THIS DOCUMENT IS NOT VALID FOR CLAIM OF INPUT TAX"
-            tipsSub = "For assistance,please visit skypay.com.ph and send us a message."
+
+        printerLargeBottom = PrinterBottom().apply {
+            data.add( "*** THIS DOCUMENT IS NOT VALID FOR CLAIM OF ")
+            data.add("INPUT TAX ***")
+        }
+        printerSmallBottom = PrinterBottom().apply {
+            data.add("*** For assistance,please visit skypay.com.ph ")
+            data.add("and send us a message. ***")
         }
     }
+
 }

@@ -33,6 +33,9 @@ object HardwareSDK {
 
 
     private fun initLogger() {
+        if (application == null){
+            return
+        }
         logger = VendingMachineLogger(application!!)
         logger!!.log("SYSTEM", "Logger", "日志系统初始化完成")
     }

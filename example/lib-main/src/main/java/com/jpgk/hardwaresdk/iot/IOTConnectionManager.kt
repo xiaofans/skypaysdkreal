@@ -1,7 +1,13 @@
 package com.jpgk.hardwaresdk.iot
 
+import com.google.gson.Gson
 import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.socket.SdkSocket
+import com.jpgk.iot.enums.InvoiceTypeEnum
+import com.jpgk.iot.enums.OrderTypeEnum
+import com.jpgk.iot.enums.PaymentTypeEnum
+import com.jpgk.iot.model.up.OrderUpModel
+import java.math.BigDecimal
 
 class IOTConnectionManager private constructor() {
 
@@ -43,4 +49,21 @@ class IOTConnectionManager private constructor() {
         SdkSocket.send(msg)
     }
 
+    fun disconnect(){
+        SdkSocket.close()
     }
+
+    fun sendOrderStatusTOIot(orderNum:String, amount:Double, orderType: OrderTypeEnum, paymentType: PaymentTypeEnum, invoiceType: InvoiceTypeEnum, payStatus:Boolean){
+        var orderUpModel = OrderUpModel()
+        orderUpModel.orderNo = orderNum
+        orderUpModel.amount = BigDecimal(amount)
+        orderUpModel.orderType = orderType
+        orderUpModel.currency="TW"
+        orderUpModel.paymentType = paymentType
+        orderUpModel.phoneNumber = ""
+        orderUpModel.paymentFlag= payStatus
+        orderUpModel.invoiceType = invoiceType
+        //SocketClient.getInstance().sendMsg(JSON.toJSONString(orderUpModel))
+        send(Gson().toJson(orderUpModel))
+    }
+}
