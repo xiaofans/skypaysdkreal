@@ -42,17 +42,17 @@ open class BillCoinAcceptorManager(var portPath: String?,
         override fun onDataResponse(hexData: String?) {
             hexData?.run {
                 var data = SerialDataUtils.HexToByteArr(this)
-                Log.w("DDPayingVM","接收到数据hex:"+ hexData)
-                DLogger.log("DDPayingVM","接收到数据hex:"+ hexData)
+                Log.w(TAG,"接收到数据hex:"+ hexData)
+                DLogger.log(TAG,"接收到数据hex:"+ hexData)
                 val asciiString = hexData.chunked(2).map { it.toInt(16).toChar() }.joinToString("")
                 // Split ASCII string by space
                 val asciidata = asciiString.split(" ")
-                Log.w("DDPayingVM","接收到数据ascii:"+ asciiString)
-                DLogger.log("DDPayingVM","接收到数据ascii:"+ asciiString)
+                Log.w(TAG,"接收到数据ascii:"+ asciiString)
+                DLogger.log(TAG,"接收到数据ascii:"+ asciiString)
 //                val responseBytes = hexData.split(" ").map { it.toInt(16) }
 //                val responseBytes = hexData.chunked(2).map { it.toInt(16) }
-                Log.w("DDPayingVM","响应字节:$asciidata 长度:${asciidata.size}")
-                DLogger.log("DDPayingVM","响应字节:$asciidata 长度:${asciidata.size}")
+                Log.w(TAG,"响应字节:$asciidata 长度:${asciidata.size}")
+                DLogger.log(TAG,"响应字节:$asciidata 长度:${asciidata.size}")
 
                 isBillAcceptorOnLine = true
                /* if (asciidata[0].equals("03") && asciidata[1].equals("19")){
@@ -81,15 +81,15 @@ open class BillCoinAcceptorManager(var portPath: String?,
                             if (cmdAsciidata.size == 2){
                                 if (asciidata[0] == "00"){
                                     isBillAcceptorEnableCommandAccepted = true
-                                    DLogger.log("DDPayingVM","纸币器正常启用")
-                                    Log.w("DDPayingVM","纸币器正常启用")
+                                    DLogger.log(TAG,"纸币器正常启用")
+                                    Log.w(TAG,"纸币器正常启用")
                                 }
                             }
                             if (cmdAsciidata.size == 4){
                                 if (cmdAsciidata[0] == "03" && cmdAsciidata[1] == "00" && cmdAsciidata[2]=="03"){
                                     isCoinAcceptorEnabled = true
-                                    DLogger.log("DDPayingVM","硬幣器正常启用")
-                                    Log.w("DDPayingVM","硬幣器正常启用")
+                                    DLogger.log(TAG,"硬幣器正常启用")
+                                    Log.w(TAG,"硬幣器正常启用")
                                 }
                             }
                             DLogger.log("cmdAsciiString:${cmdAsciiString},cmdAsciidata:${cmdAsciidata},cmdResponseBytesSize:${cmdResponseBytesSize}")
