@@ -4,6 +4,7 @@ import com.jpgk.hardwaresdk.entity.AuthAddress
 import com.jpgk.vendingmachine.lib_base.entity.DeviceEntity
 import com.jpgk.vendingmachine.lib_base.entity.MachineEntity
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -22,6 +23,7 @@ interface ApiService {
         @Query("machineCode") machineCode: String?
     ): ApiResponse<AuthAddress>
 
+    @Headers("Domain-Name: auth")
     @POST
     suspend fun auth(
         @Url url: String?,

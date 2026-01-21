@@ -2,7 +2,10 @@ package com.jpgk.hardwaresdk.socket
 
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
+import com.jpgk.hardwaresdk.HardwareSDK
+import com.jpgk.hardwaresdk.hardwarelogger.LogUploadService
 import com.jpgk.hardwaresdk.iot.IOTListener
 import com.jpgk.hardwaresdk.iot.IotLogger
 import com.jpgk.iot.enums.DownCommandEnum
@@ -40,6 +43,18 @@ object SdkSocket {
             // 切回 UI 线程分发给监听器
             val jsonObject = JSONObject(msg)
             var type = jsonObject.optString("command")
+            if (type == "UPLOAD_LOG"){
+                val jsoObj1 = jsonObject.optString("ossCredentials")
+                val serialNo = jsonObject.optString("serialNo")
+                if (jsoObj1 != null){
+                    val jsobObj2 = JSONObject(jsoObj1)
+                    val expiration = jsobObj2.optLong("expiration")
+                    val securityToken = jsobObj2.optString("securityToken")
+                    val startDate = jsonObject.optLong("beginDate")
+                    val endDate = jsonObject.optLong("endDate")
+                    LogUploadService.startUpload(HardwareSDK.application,startDate,endDate,expiration,securityToken,serialNo)
+                }
+            }
             if (!jsonObject.isNull("ack") && jsonObject.getBoolean("ack")) {
                 sendAckToServer(type, jsonObject.optString("serialNo"))
             }

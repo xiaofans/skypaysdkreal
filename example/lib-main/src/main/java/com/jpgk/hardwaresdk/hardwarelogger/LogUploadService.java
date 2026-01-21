@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.jpgk.hardwaresdk.HardwareSDK;
 import com.jpgk.hardwaresdk.utils.DateUtils;
 import com.jpgk.iot.model.up.UploadLogAckUpModel;
 
@@ -69,7 +70,7 @@ public class LogUploadService extends IntentService {
         expiration = intent.getLongExtra("expiration",0);
         securityToken = intent.getStringExtra("securityToken");
         serialNo = intent.getStringExtra("serialNo");
-        VendingMachineLogger logger = null;//App.instance.getLogger();
+        VendingMachineLogger logger = HardwareSDK.INSTANCE.getLogger();//App.instance.getLogger();
         if (logger == null){
             return;
         }
