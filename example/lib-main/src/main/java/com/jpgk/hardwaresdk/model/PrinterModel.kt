@@ -17,30 +17,30 @@ class PrinterModel {
             logoRes = R.mipmap.skypay_logo
         }
         printerBasic = PrinterBasic().apply {
-            data["terminalSN"] = "SKYPAY26-000001"
-            data["refNO"] = "398855645676445"
-            data["dateAndTime"] = DateUtils.convertDateFormat2(System.currentTimeMillis())
+            data["Terminal S/N:"] = "SKYPAY26-000001"
+            data["Ref No:"] = "398855645676445"
+            data["Date and Time:"] = DateUtils.convertDateFormat2(System.currentTimeMillis())
         }
         printerAcknowledgementReceipt = PrinterAcknowledgementReceipt().apply {
-            data["typeOfTransaction"] = "Cash In"
-            data["billerService"] = "GCASH"
-            data["mobileNumber"] = "0912xxx7890"
-            data["amount"] = "4,000.00"
-            data["serviceFee"] = "10.00"
-            data["vatAmount"] = "1.20"
-            data["totalAmount"] = "4,011.20"
-            data["amountReceived"] = "4050.00"
+            data["Type of Transaction:"] = "Cash In"
+            data["Biller/Service:"] = "GCASH"
+            data["Mobile Number:"] = "0912xxx7890"
+            data["Amount:"] = "4,000.00"
+            data["Service Fee:"] = "10.00"
+            data["VAT Amount:"] = "1.20"
+            data["Total Amount:"] = "4,011.20"
+            data["Amount Received:"] = "4050.00"
         }
 
         printerChangeRecovery = PrinterChangeRecovery().apply {
-            data["changeAmount"] = "38.80"
-            data["action"] = "CREDITED TO WALLET"
-            data["billerService"] = "GCASH"
-            data["mobileNumber"] = "0912xxx7890"
-            data["amount"] = "27.60"
-            data["serviceFee"] = "10.00"
-            data["vatAmount"] = "1.20"
-            data["refNoChange"] = "59885645676445"
+            data["Change Amount:"] = "38.80"
+            data["Action:"] = "CREDITED TO WALLET"
+            data["Biller/Service:"] = "GCASH"
+            data["Mobile Number:"] = "0912xxx7890"
+            data["Amount:"] = "27.60"
+            data["Service Fee:"] = "10.00"
+            data["VAT Amount:"] = "1.20"
+            data["Ref No (Change):"] = "59885645676445"
         }
 
         printerLargeBottom = PrinterBottom().apply {

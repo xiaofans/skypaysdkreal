@@ -279,14 +279,14 @@ public class PrinterManager implements BaseHardware {
             printData.append("1B 61 01"); // 居中对齐
             List<String> mainTipsList = printerBottom.getData();
             for(int i = 0; i < mainTipsList.size(); i ++){
-                printData.append(stringToHex("*** "+mainTipsList.get(i)+ "\n"));
+                printData.append(stringToHex(mainTipsList.get(i)+ "\n"));
             }
         }
         if (printerModel.getPrinterSmallBottom() != null){
             printData.append("1D 21 00"); // 恢复默认字体
             List<String> subTipsList = printerModel.getPrinterSmallBottom().getData();
             for(int i = 0; i < subTipsList.size(); i ++){
-                printData.append(stringToHex("*** "+subTipsList.get(i)+ "\n"));
+                printData.append(stringToHex(subTipsList.get(i)+ "\n"));
             }
         }
         printData.append("1B 64 05"); // 增加5行空白
