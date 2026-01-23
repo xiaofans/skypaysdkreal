@@ -1,6 +1,6 @@
 package com.jpgk.hardwaresdk.socket
 
-import com.google.gson.Gson
+import com.alibaba.fastjson.JSON
 import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.iot.IotLogger
 import com.jpgk.iot.model.up.HealthUpModel
@@ -25,7 +25,7 @@ internal class HeartBeatManager(private val writer: SocketWriter) {
                 heartUpModel.maxId = msgId
                 heartUpModel.version = HardwareSDK.appVersion
                 msgId++
-                val heartJson = Gson().toJson(heartUpModel)
+                val heartJson = JSON.toJSON(heartUpModel).toString()
                 IotLogger.w("SocketSDK","Heart JSON:${heartJson}")
                 writer.send(heartJson)
             } catch (_: Exception) {

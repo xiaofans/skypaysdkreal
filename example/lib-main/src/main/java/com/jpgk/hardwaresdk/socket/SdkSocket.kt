@@ -2,8 +2,7 @@ package com.jpgk.hardwaresdk.socket
 
 
 import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
+import com.alibaba.fastjson.JSON
 import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.hardwarelogger.LogUploadService
 import com.jpgk.hardwaresdk.iot.IOTListener
@@ -84,7 +83,7 @@ object SdkSocket {
         receiveAckUpModel.serialNo = seriNo
         receiveAckUpModel.downCommand = DownCommandEnum.valueOf(commandType)
 
-        var data1 = Gson().toJson(receiveAckUpModel).toString()
+        var data1 = JSON.toJSON(receiveAckUpModel).toString()
         IotLogger.w("SdkSocket", "sendAckToServer${data1}")
         send(data1)
     }
@@ -99,7 +98,7 @@ object SdkSocket {
 
         // ⚠️ 注意：这里直接调用 connection.send
         ioScope.launch {
-            connection?.send(Gson().toJson(authentication).toString())
+            connection?.send(JSON.toJSON(authentication).toString())
         }
     }
 

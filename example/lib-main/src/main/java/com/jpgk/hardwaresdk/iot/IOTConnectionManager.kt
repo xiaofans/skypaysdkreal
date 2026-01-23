@@ -1,5 +1,6 @@
 package com.jpgk.hardwaresdk.iot
 
+import com.alibaba.fastjson.JSON
 import com.google.gson.Gson
 import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.socket.SdkSocket
@@ -64,6 +65,6 @@ class IOTConnectionManager private constructor() {
         orderUpModel.paymentFlag= payStatus
         orderUpModel.invoiceType = invoiceType
         //SocketClient.getInstance().sendMsg(JSON.toJSONString(orderUpModel))
-        send(Gson().toJson(orderUpModel))
+        send(JSON.toJSONString(orderUpModel))
     }
 }
