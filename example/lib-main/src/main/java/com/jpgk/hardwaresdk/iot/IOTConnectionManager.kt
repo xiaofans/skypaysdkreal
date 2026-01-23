@@ -3,6 +3,7 @@ package com.jpgk.hardwaresdk.iot
 import com.alibaba.fastjson.JSON
 import com.google.gson.Gson
 import com.jpgk.hardwaresdk.HardwareSDK
+import com.jpgk.hardwaresdk.socket.HeartBeatManager
 import com.jpgk.hardwaresdk.socket.SdkSocket
 import com.jpgk.iot.enums.InvoiceTypeEnum
 import com.jpgk.iot.enums.OrderTypeEnum

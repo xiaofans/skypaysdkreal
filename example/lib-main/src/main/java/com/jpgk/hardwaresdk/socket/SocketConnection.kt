@@ -35,6 +35,8 @@ internal class SocketConnection(
 
     private val reconnectDelay = 5_000L
 
+    private var heartBeatJob: Job? = null
+
 
     fun start() {
         scope.launch {
@@ -76,7 +78,7 @@ internal class SocketConnection(
             //Socket 连接完成，通知上层
             onConnected?.invoke()
             // start heartbeat
-            scope.launch { HeartBeatManager(writer!!).start() }
+            heartBeatJob  = scope.launch { HeartBeatManager(writer!!).start() }
         } ?: throw IllegalStateException("socket is null after creation")
     }
 
@@ -94,6 +96,8 @@ internal class SocketConnection(
         running = false
         try { reader?.stop() } catch (_: Exception) {}
         try { socket?.close() } catch (_: Exception) {}
+        heartBeatJob?.cancel()
+        heartBeatJob = null
         socket = null
     }
 }
