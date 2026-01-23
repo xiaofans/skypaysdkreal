@@ -20,7 +20,7 @@ object SdkSocket {
 
     private  var HOST = "192.168.2.28"
     private  var PORT = 20000
-    private  var machineCode = "jp003"
+    var machineCode = "jp003"
     private  var token = ""
 
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)

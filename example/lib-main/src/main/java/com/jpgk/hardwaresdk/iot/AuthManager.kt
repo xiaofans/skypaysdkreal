@@ -24,10 +24,10 @@ internal class AuthManager(
             IotLogger.d(TAG, "Step3: auth")
             val device = auth(machineCode)
 
-            IotLogger.d(TAG, "Step4: getMachineDetail")
-            val machine = getMachineDetail(machineCode)
+            //IotLogger.d(TAG, "Step4: getMachineDetail")
+            //val machine = getMachineDetail(machineCode)
 
-            AuthResult(device, machine)
+            AuthResult(device, MachineEntity())
         }
     }
 

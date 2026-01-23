@@ -1,6 +1,7 @@
 package com.jpgk.hardwaresdk.socket
 
 import com.google.gson.Gson
+import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.iot.IotLogger
 import com.jpgk.iot.model.up.HealthUpModel
 import kotlinx.coroutines.delay
@@ -18,11 +19,11 @@ internal class HeartBeatManager(private val writer: SocketWriter) {
         while (running) {
             try {
                 var heartUpModel = HealthUpModel()
-                heartUpModel.imei = "jp003"
-                heartUpModel.machineCode = "jp003"
+                heartUpModel.imei = SdkSocket.machineCode
+                heartUpModel.machineCode = SdkSocket.machineCode
                 heartUpModel.timestamp = Date()
                 heartUpModel.maxId = msgId
-                heartUpModel.version = "1.7.7"
+                heartUpModel.version = HardwareSDK.appVersion
                 msgId++
                 val heartJson = Gson().toJson(heartUpModel)
                 IotLogger.w("SocketSDK","Heart JSON:${heartJson}")

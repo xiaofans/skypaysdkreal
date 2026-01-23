@@ -3,6 +3,7 @@ package com.jpgk.hardwaresdk
 import android.app.Application
 import com.jpgk.hardwaresdk.hardwarelogger.SystemLogger
 import com.jpgk.hardwaresdk.hardwarelogger.VendingMachineLogger
+import com.jpgk.hardwaresdk.utils.AppVersionHelper
 
 object HardwareSDK {
 
@@ -10,6 +11,7 @@ object HardwareSDK {
 
      var logger: VendingMachineLogger? = null
      var application:Application? = null
+     var appVersion:String? = ""
     fun init(
         application: Application
     ) {
@@ -20,6 +22,7 @@ object HardwareSDK {
         // 2. 初始化 Socket
         // 3. 初始化设备
         initialized = true
+        appVersion = AppVersionHelper(application).getVersionName()
     }
 
 
