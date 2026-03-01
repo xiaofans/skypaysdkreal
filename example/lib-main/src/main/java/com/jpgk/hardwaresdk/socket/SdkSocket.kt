@@ -7,7 +7,10 @@ import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.hardwarelogger.LogUploadService
 import com.jpgk.hardwaresdk.iot.IOTListener
 import com.jpgk.hardwaresdk.iot.IotLogger
+import com.jpgk.hardwaresdk.upgrade.UpgradeManager
+import com.jpgk.hardwaresdk.utils.DLogger
 import com.jpgk.iot.enums.DownCommandEnum
+import com.jpgk.iot.model.down.UpgradeDownModel
 import com.jpgk.iot.model.up.AuthenticationUpModel
 import com.jpgk.iot.model.up.ReceiveAckUpModel
 import kotlinx.coroutines.*
@@ -39,6 +42,7 @@ object SdkSocket {
         this.machineCode = machineCode
         connection = SocketConnection(HOST, PORT, onMessage ={ msg ->
             IotLogger.w("SocketMsg",msg)
+            DLogger.log("IOT:$msg")
             // 切回 UI 线程分发给监听器
             val jsonObject = JSONObject(msg)
             var type = jsonObject.optString("command")
@@ -53,6 +57,10 @@ object SdkSocket {
                     val endDate = jsonObject.optLong("endDate")
                     LogUploadService.startUpload(HardwareSDK.application,startDate,endDate,expiration,securityToken,serialNo)
                 }
+            }else if (type == "UPGRADE"){
+                val upgradeDownModel =
+                    JSON.parseObject(msg, UpgradeDownModel::class.java)
+                    UpgradeManager.downloadApk(upgradeDownModel.url)
             }
             if (!jsonObject.isNull("ack") && jsonObject.getBoolean("ack")) {
                 sendAckToServer(type, jsonObject.optString("serialNo"))

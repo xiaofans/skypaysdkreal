@@ -14,7 +14,7 @@ android {
     namespace "com.jpgk.hardwaresdk"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 34
         versionCode 1
         versionName "1.0.0"
@@ -111,6 +111,7 @@ dependencies {
 
     embed ("com.github.Acccord:AndroidSerialPort:1.5.2")
     embed("com.alibaba:fastjson:1.2.76")
+    embed("com.github.xuexiangjys:XUpdate:2.1.5")
 
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
