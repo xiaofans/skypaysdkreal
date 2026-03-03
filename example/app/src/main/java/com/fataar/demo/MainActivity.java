@@ -24,6 +24,7 @@ import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.jpgk.hardwaresdk.upgrade.UpgradeManager;
 import com.kezong.demo.javalib.JavaLib1;
 import com.kezong.demo.lib.KotlinInMain;
 import com.kezong.demo.lib.MainLibClass;
@@ -141,8 +142,9 @@ public class MainActivity extends FragmentActivity {
         Button button = new Button(this);
         button.setText("Activity Test");
         button.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, TestActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(MainActivity.this, TestActivity.class);
+//            startActivity(intent);
+            UpgradeManager.INSTANCE.downloadApk("http://35.206.198.17/haoweilai/upload/1772508738988.apk");
         });
         LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

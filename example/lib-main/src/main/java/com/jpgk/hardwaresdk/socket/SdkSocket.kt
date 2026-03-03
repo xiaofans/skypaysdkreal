@@ -46,6 +46,7 @@ object SdkSocket {
             // 切回 UI 线程分发给监听器
             val jsonObject = JSONObject(msg)
             var type = jsonObject.optString("command")
+            IotLogger.w("MSG_TYPE",type)
             if (type == "UPLOAD_LOG"){
                 val jsoObj1 = jsonObject.optString("ossCredentials")
                 val serialNo = jsonObject.optString("serialNo")
@@ -58,9 +59,9 @@ object SdkSocket {
                     LogUploadService.startUpload(HardwareSDK.application,startDate,endDate,expiration,securityToken,serialNo)
                 }
             }else if (type == "UPGRADE"){
-                val upgradeDownModel =
-                    JSON.parseObject(msg, UpgradeDownModel::class.java)
-                    UpgradeManager.downloadApk(upgradeDownModel.url)
+                val upgradeDownModel = JSON.parseObject(msg, UpgradeDownModel::class.java)
+                IotLogger.w("UPGRADE:",upgradeDownModel.url)
+                UpgradeManager.downloadApk(upgradeDownModel.url)
             }
             if (!jsonObject.isNull("ack") && jsonObject.getBoolean("ack")) {
                 sendAckToServer(type, jsonObject.optString("serialNo"))

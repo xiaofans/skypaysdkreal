@@ -12,6 +12,9 @@ object HardwareSDK {
      var logger: VendingMachineLogger? = null
      var application:Application? = null
      var appVersion:String? = ""
+     var packageName:String? = ""
+     var splashAct:String? = ""
+
     fun init(
         application: Application
     ) {
@@ -34,6 +37,10 @@ object HardwareSDK {
         SystemLogger.start(context = application!!, keepDays = 30)
     }
 
+    fun initUpgradeConfig(packageName:String,splashAct:String){
+        this.packageName = packageName
+        this.splashAct = splashAct
+    }
 
     private fun initLogger() {
         if (application == null){

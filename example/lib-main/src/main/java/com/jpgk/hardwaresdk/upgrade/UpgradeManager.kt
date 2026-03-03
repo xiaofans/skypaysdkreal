@@ -1,11 +1,8 @@
 package com.jpgk.hardwaresdk.upgrade
 
-import android.util.Log
 import com.jpgk.hardwaresdk.HardwareSDK
 import com.jpgk.hardwaresdk.hardwarelogger.LocalLogsPathManager
-import com.jpgk.hardwaresdk.utils.DLogger
-import com.xuexiang.xupdate.XUpdate
-import com.xuexiang.xupdate.service.OnFileDownloadListener
+import com.jpgk.hardwaresdk.iot.IotLogger
 import java.io.DataOutputStream
 import java.io.File
 
@@ -13,42 +10,24 @@ object UpgradeManager {
 
      fun downloadApk(apkDownloadUrl:String) {
         if (HardwareSDK.application != null){
-            XUpdate.newBuild(HardwareSDK.application!!.applicationContext)
-                .apkCacheDir(LocalLogsPathManager.getLogsNewPath()) // Set the root directory of the download cache
-                .build()
-                .download(apkDownloadUrl, object : OnFileDownloadListener {
-                    override fun onStart() {
-
-                    }
-
-
-                    override fun onProgress(progress: Float, total: Long) {
-                        DLogger.log("progress::$progress, totals:$total")
-                    }
-
-                    override fun onCompleted(file: File): Boolean {
-                        //ToastUtils.toast("apk下载完毕，文件路径：" + file.path)
-//                    _XUpdate.startInstallApk(this@DDPaySettingAct, file);
-                        // 请求存储权限
-                        /* if (ContextCompat.checkSelfPermission(this@DDPaySettingAct, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                             ActivityCompat.requestPermissions(this@DDPaySettingAct, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE_PERMISSION)
-                         } else {*/
-                        // 权限已获取，进行安装
-                        //installApk(file)
-                        DLogger.log("download complete::${file.absolutePath}")
-                        //installApkSilently(file.absolutePath)
-                        installAndLaunchApk(file.absolutePath,"com.jpgk.vendingmachine",".splash.SplashActivity")
-                        /*}*/
-                        return false
-                    }
-
-                    override fun onError(throwable: Throwable) {
-                        DLogger.log("OnError::",throwable.toString())
-                        //downloadApk(apkDownloadUrl)
-                    }
-                })
+            ApkDownloader.downloadApk(
+                url = apkDownloadUrl,
+                downloadDir = File(LocalLogsPathManager.getLogsNewPath()),
+                onProgress = {
+                    IotLogger.w("UpgradeManager","down apk onProgress:${it}")
+                },
+                onSuccess = { path ->
+                    IotLogger.w("UpgradeManager","down apk onSuccess:${path}")
+                    installAndLaunchApk(apkPath = path, packageName = HardwareSDK.packageName?:"", mainActivity = HardwareSDK.splashAct?:"")
+                },
+                onError = {
+                    it.printStackTrace()
+                    IotLogger.w("UpgradeManager","down apk onError:${it.toString()}")
+                }
+            )
+        }else{
+            IotLogger.w("UpgradeManager","NOT INIT")
         }
-
     }
 
     fun installAndLaunchApk(apkPath: String, packageName: String, mainActivity: String): Boolean {
